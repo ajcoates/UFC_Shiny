@@ -37,8 +37,7 @@ referees_sorted <- sort(table(ufc_data$referee),decreasing = TRUE)
 referees_sorted
 ##Referees df; takes r fighter, b fighter, referee, winner, title_bout
 referees <- data.frame(ufc_data1$r_fighter,ufc_data1$b_fighter,ufc_data1$referee,ufc_data1$winner,ufc_data1$title_bout)
-##Referees sorted by referee count
-refere
+
 ##Bar plot of title bouts vs non title, referee
 ggplot(data=ufc_bind_top20) +
   geom_bar(aes(x=ufc_bind_top20$referee,fill=ufc_bind_top20$title_bout)) +
@@ -50,7 +49,6 @@ ggplot(data=ufc_bind_top20) +
   theme_bw() +
   theme(legend.key=element_blank())
 
-##mutate method piping into referees the mutated column top
 ##Filtered to reflect top referees so as not to clutter graph
 order(referee)
 refereesFiltered = semi_join(referees, topreferee_filtered, by = 'referee')
