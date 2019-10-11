@@ -21,16 +21,30 @@ ufc_bind <- rename(ufc_bind, r_fighter = r_fighter, b_fighter = b_fighter, refer
 ##top 20 refs
 ufc_bind_top20 = filter(ufc_bind, referee == 'Herb Dean' | referee == 'John McCarthy' | referee == 'Mario Yamasaki' | referee == 'Dan Miragliotta' | referee == 'Marc Goddard' | referee == 'Yves Lavigne' | referee == 'Steve Mazzagatti' | referee == 'Leon Roberts' | referee == 'Keith Peterson' | referee == 'Josh Rosenthal' | referee == 'Chris Tognoni' | referee == 'Jason Herzog')
 ##ufc_bind_top20 by interventions (decision vs non-decision)
-ufc_bind_stoppage <- for (win in ufc_bind_top20$win_by)
-  if(win == "KO/TKO" | win == "Submission" | win == "DQ"){
-    gsub(win, "Stoppage", ufc_bind_top20$win_by){
-      else
-        gsub(win,"Decision", ufc_bind_top20$win_by)
-    }
-  }
+#ufc_bind_stoppage <- ufc_bind_top20 %>% for (win in ufc_bind_top20$win_by)
+#  if(win == "KO/TKO" | win == "Submission" | win == "DQ"){
+ #   gsub(win, "Stoppage", ufc_bind_top20$win_by)}
+  #    else{
+   #     gsub(win,"Decision", ufc_bind_top20$win_by)
+    #  }
+##
+
+###Better solution than for loop and conditional above:
+ufc_bind_top20 <- ufc_bind_top20 %>% mutate(stoppage_decision = case_when(grepl("KO/TKO",win_by) ~ "Stoppage",
+                                       grepl("Submission",win_by) ~ "Stoppage",
+                                       grepl("Could Not Continue",win_by) ~ "Stoppage",
+                                       grepl("DQ",win_by) ~ "Stoppage",
+                                       grepl("TKO - Doctor's Stoppage",win_by) ~ "Stoppage",
+                                       grepl("Decision - Unanimous",win_by) ~ "Decision",
+                                       grepl("Decision - Majority",win_by) ~ "Decision",
+                                       grepl("Other",win_by) ~ "NA",
+                                       grepl("Overturned",win_by) ~ "NA",
+                                       grepl("Decision - Split",win_by) ~ "Decision"))
+
+ufc_bind_top20 <- 
+
+                                      
 #  if (win == "KO/TKO" | win == "Submission"){
-    print("win")
-  }
 sum(ufc_bind_stoppage)
 
 ####code for sorting referees by experience
@@ -58,10 +72,35 @@ ggplot(data=ufc_bind_top20) +
   theme_bw() +
   theme(legend.key=element_blank())
 
+##Bar plot of referee by stoppage_decision
+ggplot(data=ufc_bind_top20) +
+  geom_bar(aes(x=referee,fill=stoppage_decision,position="dodge2")) +
+  labs(title='Referees By Experience',
+       x='Referee',
+       y='Number of matches') +
+  scale_fill_brewer(palette='Set1') +
+  coord_flip() + 
+  theme_bw() +
+  theme(legend.key=element_blank())
+
 ##scatter plot win_by and years by count
-ggplot(ufc_bind_top20, aes(x = referee, y = date)) +
-  geom_point() +
-  coord_flip()
+hist(ufc_bind_stoppage_top20$last_round,
+     main="Round Stoppage by Ref",
+     xlab="last_round",
+     xlim=c(1,5),
+     col="darkmagenta",
+     freq=FALSE
+)
+
+##histogram of 
+ggplot(data=ufc_bind_top20,aes(ufc_bind_top20$last_round, position='dodge')) + 
+  geom_histogram(binwidth=.5)
+
+##
+  geom_histogram(data=ufc_bind_stoppage_top20,yy == 'a'),fill = "red", alpha = 0.2) +
+  geom_histogram(data=subset(dat,yy == 'b'),fill = "blue", alpha = 0.2) +
+  geom_histogram(data=subset(dat,yy == 'c'),fill = "green", alpha = 0.2)
+
 ##Translates all variable names to lowercase to make calling variables easier
 names(ufc_data) <- tolower(names(ufc_data))
 ##Creates a dummy df  (ufc_data1) to experiment on
