@@ -1,33 +1,34 @@
-                    #
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
+library(DT)
 library(shiny)
+library(shinydashboard)
 
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-
-    # Application title
-    titlePanel("MMA Referee Performance Reference"),
-
-    # Sidebar with a slider input for number of bins
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
+shinyUI(dashboardPage(
+    dashboardHeader(title = "Referee History Reference For MMA Bettors"),
+    dashboardSidebar(
+        
+        sidebarUserPanel("Arliss Coates",
+                         image = "https://yt3.ggpht.com/-04uuTMHfDz4/AAAAAAAAAAI/AAAAAAAAAAA/Kjeupp-eNNg/s100-c-k-no-rj-c0xffffff/photo.jpg"),
+        sidebarMenu(
+            menuItem("Map", tabName = "map", icon = icon("map")),
+            menuItem("Data", tabName = "data", icon = icon("database"))
         ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-            plotOutput("distPlot")
+        selectizeInput("selected",
+                       "Select Item to Display",
+                       choice)
+    ),
+    dashboardBody(
+        tags$head(
+            tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+        ),
+        tabItems(
+            tabItem(tabName = "map",
+                    fluidRow(infoBoxOutput("maxBox"),
+                             infoBoxOutput("minBox"),
+                             infoBoxOutput("avgBox")),
+                    fluidRow(box(htmlOutput("map"), height = 300),
+                             box(htmlOutput("hist"), height = 300))),
+            tabItem(tabName = "data",
+                    fluidRow(box(DT::dataTableOutput("table"), width = 12)))
         )
     )
 ))
