@@ -93,14 +93,71 @@ hist(ufc_bind_stoppage_top20$last_round,
 )
 
 ##histogram of 
-ggplot(data=ufc_bind_top20,aes(ufc_bind_top20$last_round, position='dodge')) + 
+ggplot(data=ufc_bind_top20,aes(ufc_bind_to$last_round, position='dodge')) + 
   geom_histogram(binwidth=.5)
-
 ##
-  geom_histogram(data=ufc_bind_stoppage_top20,yy == 'a'),fill = "red", alpha = 0.2) +
-  geom_histogram(data=subset(dat,yy == 'b'),fill = "blue", alpha = 0.2) +
-  geom_histogram(data=subset(dat,yy == 'c'),fill = "green", alpha = 0.2)
+ggplot(ufc_bind_top20,aes(x=referee))
+  geom_histogram((data=ufc_bind_top20, year == '1993')fill = "red", alpha = 0.2)
 
+##barplot by stoppage_decision
+ggplot(ufc_bind_top20, aes(x=last_round)) + 
+  geom_histogram(stat='count') +
+  geom_histogram(aes(x=ufc_bind_top20$last_round))
+
+ggplot(ufc_bind_top20, aes(x=last_round)) +
+  geom_histogram(stat)
+
+##mbarplots of stoppage type per weightclass
+ggplot(data=ufc_bind_top20) +
+  geom_bar(aes(x=ufc_bind_top20$weight_class,fill=ufc_bind_top20$win_by,position='fill')) +
+  labs(title='Referees By Experience',
+       x='Weight Class',
+       y='# of bouts') +
+  scale_fill_brewer(palette='Set1') +
+  coord_flip() + 
+  theme_bw() +
+  theme(legend.key=element_blank())
+##barplot of weightclass by stoppage_decision
+ggplot(data=ufc_bind_top20) +
+  geom_bar(aes(x=ufc_bind_top20$weight_class,fill=ufc_bind_top20$stoppage_decision,position='fill')) +
+  labs(title='Referees By Experience',
+       x='Weight Class',
+       y='# of bouts') +
+  scale_fill_brewer(palette='Set1') +
+  coord_flip() + 
+  theme_bw() +
+  theme(legend.key=element_blank())
+
+##weight class by stoppage_decision STACKED
+ggplot(data = ufc_bind_top20, aes(x = weight_class)) +
+  geom_bar(aes(fill = stoppage_decision), position = 'fill') +
+  labs(title='Weight class by win 100% STACK',
+       x='weight class',
+       y=''
+  scale_fill_brewer(palette='Set1') +
+  coord_flip() +
+  theme_bw() +
+  theme(legend.key=element_blank())
+
+##weight class by win_by STACKED
+ggplot(data = ufc_bind_top20, aes(x = weight_class)) +
+  geom_bar(aes(fill = win_by), position = 'fill') +
+  labs(title='Weight class by win-type 100% STACK',
+       x='weight class',
+       y='') +
+  scale_fill_brewer(palette='Set1') +
+  coord_flip() +
+  theme_bw() +
+  theme(legend.key=element_blank())
+
+##Referee by 
+ggplot(data=ufc_bind_top20, aes(date, )) +
+  geom_point(aes())
+         
+
+       
+       
+##Weight class by round
 ##Translates all variable names to lowercase to make calling variables easier
 names(ufc_data) <- tolower(names(ufc_data))
 ##Creates a dummy df  (ufc_data1) to experiment on

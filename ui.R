@@ -2,6 +2,8 @@ library(DT)
 library(shiny)
 library(shinydashboard)
 
+ufc_bind_top20 <- read.csv(file = "./ufc_bind_top20")
+
 shinyUI(dashboardPage(
     dashboardHeader(title = "Referee History Reference For MMA Bettors"),
     dashboardSidebar(
@@ -9,12 +11,11 @@ shinyUI(dashboardPage(
         sidebarUserPanel("Arliss Coates",
                          image = "https://yt3.ggpht.com/-04uuTMHfDz4/AAAAAAAAAAI/AAAAAAAAAAA/Kjeupp-eNNg/s100-c-k-no-rj-c0xffffff/photo.jpg"),
         sidebarMenu(
-            menuItem("Map", tabName = "map", icon = icon("map")),
             menuItem("Data", tabName = "data", icon = icon("database"))
         ),
         selectizeInput("selected",
                        "Select Item to Display",
-                       choice)
+                       "choice")
     ),
     dashboardBody(
         tags$head(
