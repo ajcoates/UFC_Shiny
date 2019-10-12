@@ -4,7 +4,7 @@ library(googleVis)
 
 shinyServer(function(input, output){
     # show map using googleVis
-    output$map <- renderGvis({
+    output$hist <- renderPlot({
         gvisGeoChart(state_stat, "state.name", input$selected,
                      options=list(region="US", displayMode="regions", 
                                   resolution="provinces",
