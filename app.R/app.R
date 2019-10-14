@@ -1,21 +1,48 @@
-library(shiny)
-library(shinydashboard)
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here
+#    http://shiny.rstudio.com/
+#
 
-ui <- dashboardPage(
-    dashboardHeader(),
-    dashboardSidebar(),
-    dashboardBody(
-        fluidRow(
-            box(plotOutput("plot1", height = 250),
-                
-                box(
-                    title = "Controls,"
-                    sliderInput("slider", "Number of observations:", 1, 100, 50)
-                ))
+library(shiny)
+library(tidyverse)
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+    
+    # Application title
+    titlePanel("UFC Bettors' Reference"),
+    
+    # Sidebar with a slider input for number of bins 
+    sidebarLayout(
+        sidebarPanel(
+            selectInput("xaxis","Select the value for the X Axis",colnames(ufc_bind_top20), selected = "weightclass")
+            selectInput("yaxis","Select the value for the Y Axis",colnames(ufc_bind_top20), selected = "distribution")
+            checkboxInput("sidebar","Create Side Bar")
+        ),
+        
+        # Show a plot of the generated distribution
+        mainPanel(
+            plotOutput("barPlot")
         )
     )
 )
 
-server <- function(input, output) { }
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+    
+    output$barPlot <- renderPlot({ggplot(data = ufc_bind_top20, aes(x = weight_class)) +
+            geom_bar(aes(fill = win_by), position = 'fill') +
+            labs(title='Weight class by win-type 100% STACK',
+                 x='weight class',
+                 y='distribution') +
+            scale_fill_brewer(palette='Set1') +
+            coord_flip() +
+            theme_bw() +
+            theme(legend.key=element_blank())
+    })
+}
 
-shinyApp(ui, server)
+# Run the application 
+shinyApp(ui = ui, server = server)
