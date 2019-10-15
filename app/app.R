@@ -31,20 +31,31 @@ ui <- pageWithSidebar(
     
     # Main panel for displaying outputs ----
     mainPanel(
-        plotOutput('barPlot')
+        # Output: Formatted text for caption ----
+        h3(textOutput("caption")),
+        
+        # Output: Plot of the requested variable against mpg ----
+        plotOutput("barPlot")
+        
     )
-
-
 )
+
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+    
+    formulaText <- reactive({
+        paste("Outcome ~", input$variable)
+    })
+    
+    output$caption <- renderText({
+        formulaText()
+    })
 
         output$barPlot <- renderPlot({
 
             ggplot(
                 data = ufc_bind_top20,
-                
                 aes(x = weight_class)) +
                 geom_bar(aes(fill = win_by), position = 'fill') +
                 labs(title='Weight class by win-type 100% STACK',
