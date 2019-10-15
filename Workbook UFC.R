@@ -149,12 +149,24 @@ ggplot(data = ufc_bind_top20, aes(x = weight_class)) +
   theme_bw() +
   theme(legend.key=element_blank())
 
-##Referee by 
-ggplot(ufc_bind_top20,aes(x=last_round,position = 'dodge')) + 
-  geom_histogram(data=subset(ufc_bind_top20,referee == 'John McCarthy'),fill = "red", alpha = 0.2) + 
-  geom_histogram(data=subset(ufc_bind_top20,referee == 'Herb Dean'),fill = "blue", alpha = 0.2) +
-  geom_histogram(data=subset(ufc_bind_top20,referee == 'Josh Rosenthal'),fill = "blue", alpha = 0.2) 
-
+##Referee by last_round
+ggplot(data=ufc_bind_top20) +
+  geom_bar(aes(x=ufc_bind_top20$last_round,fill=ufc_bind_top20$referee),alpha = 0.8,position='dodge') +
+  labs(title='Referees By last_round',
+       x='last_round',
+       y='count') +
+  scale_fill_brewer(palette='Set1') +
+  theme_bw() +
+  theme(legend.key=element_blank())
 ##
 ggplot(ufc_bind_top20$r_fighter, aes(date, last_round_time)) +
   geom_point()
+
+
+###
+dat <- data.frame(xx = c(runif(100,20,50),runif(100,40,80),runif(100,0,30)),yy = rep(letters[1:3],each = 100))
+
+ggplot(dat,aes(x=xx)) + 
+  ata=subset(ufc_bind_top20,referee == 'John McCarthy'),fill = "red", alpha = 0.2) + 
+  geom_bar(data=subset(ufc_bind_top20,referee == 'Herb Dean'),fill = "blue", alpha = 0.2) +
+  geom_bar(data=subset(ufc_bind_top20,referee == 'Josh Rosenthal'),fill = "blue", alpha = 0.2)
