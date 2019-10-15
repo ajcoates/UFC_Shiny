@@ -69,17 +69,17 @@ server <- function(input, output) {
     })
     
     output$refereePlot <- renderPlot({
-
-      p <- ggplot(
-          data=ufc_bind_top20)
-
-      p + geom_bar(aes(x=ufc_bind_top20$last_round,fill=input$variable),alpha = 0.8,position='dodge') +
-          labs(title='Referees By last_round',
-            x='last_round',
-            y='count') +
-          scale_fill_brewer(palette='Set1') +
-          theme_bw() +
-          theme(legend.key=element_blank())
+      
+      
+      
+      ggplot(data=ufc_bind_top20) +
+        geom_bar(aes(x=ufc_bind_top20$last_round,fill=ufc_bind_top20$referee),alpha = 0.8,position='dodge') +
+        labs(title='Referees By last_round',
+             x='last_round',
+             y='count') +
+        scale_fill_brewer(palette='Set1') +
+        theme_bw() +
+        theme(legend.key=element_blank())
 
         })
 }
