@@ -19,16 +19,13 @@ ui <- pageWithSidebar(
     sidebarPanel(
         
         # Input: Selector for variable to plot against mpg ----
-        selectInput("variable", "Variable:", 
+        selectInput("variable", "Result type: ", 
                     c("Win by" = "win_by",
                       "Stoppage or decision" = "stoppage_decision")),
         
         checkboxGroupInput("refnames", "Select Referees: ",
                            unique(ufc_bind_top20$referee),
-        ),
-        
-        # Input: Checkbox for whether outliers should be included ----
-        checkboxInput("outliers", "Show outliers", TRUE)
+        )
         
     ),
     
