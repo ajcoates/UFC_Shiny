@@ -6,25 +6,35 @@
 #
 #    http://shiny.rstudio.com/
 #
+ufc_bind_top20 <- 
 
 library(shiny)
 library(tidyverse)
 # Define UI for application that draws a histogram
-ui <- fluidPage(
+ui <- pageWithSidebar(
 
     # Application title
-    titlePanel("UFC Bettors' Reference"),
-
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-           plotOutput("barPlot")
-        )
+    headerPanel("UFC Bettors' Reference"),
+    
+    sidebarPanel(
+        
+        # Input: Selector for variable to plot against mpg ----
+        selectInput("variable", "Variable:", 
+                    c("Win by" = "win_by",
+                      "Stoppage or decision" = "stoppage_decision",
+                      "Gears" = "gear")),
+        
+        # Input: Checkbox for whether outliers should be included ----
+        checkboxInput("outliers", "Show outliers", TRUE)
+        
+    ),
+    
+    # Main panel for displaying outputs ----
+    mainPanel(
+        plotOutput('barPlot')
     )
+
+
 )
 
 # Define server logic required to draw a histogram
