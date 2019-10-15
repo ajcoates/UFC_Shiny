@@ -6,7 +6,7 @@
 #
 #    http://shiny.rstudio.com/
 #
-ufc_bind_top20 <- 
+ufc_bind_top20 <- read.csv("ufc_bind_top20.csv")
 
 library(shiny)
 library(tidyverse)
@@ -41,8 +41,11 @@ ui <- pageWithSidebar(
 server <- function(input, output) {
 
         output$barPlot <- renderPlot({
-            
-            ggplot(data = ufc_bind_top20, aes(x = weight_class)) +
+
+            ggplot(
+                data = ufc_bind_top20,
+                
+                aes(x = weight_class)) +
                 geom_bar(aes(fill = win_by), position = 'fill') +
                 labs(title='Weight class by win-type 100% STACK',
                      x='weight class',
