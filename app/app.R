@@ -21,8 +21,7 @@ ui <- pageWithSidebar(
         # Input: Selector for variable to plot against mpg ----
         selectInput("variable", "Variable:", 
                     c("Win by" = "win_by",
-                      "Stoppage or decision" = "stoppage_decision",
-                      "Gears" = "gear")),
+                      "Stoppage or decision" = "stoppage_decision")),
         
         # Input: Checkbox for whether outliers should be included ----
         checkboxInput("outliers", "Show outliers", TRUE)
@@ -52,19 +51,19 @@ server <- function(input, output) {
         formulaText()
     })
 
-        output$barPlot <- renderPlot({
+    output$barPlot <- renderPlot({
 
-            ggplot(
-                data = ufc_bind_top20,
-                aes(x = weight_class)) +
-                geom_bar(aes(fill = win_by), position = 'fill') +
-                labs(title='Weight class by win-type 100% STACK',
-                     x='weight class',
-                     y='distribution') +
-                scale_fill_brewer(palette='Set1') +
-                coord_flip() +
-                theme_bw() +
-                theme(legend.key=element_blank())
+        ggplot(
+            data = ufc_bind_top20,
+            aes(x = weight_class)) +
+            geom_bar(aes(fill = win_by), position = 'fill') +
+            labs(title='Weight class by win-type 100% STACK',
+                 x='weight class',
+                 y='distribution') +
+            scale_fill_brewer(palette='Set1') +
+            coord_flip() +
+            theme_bw() +
+            theme(legend.key=element_blank())
     })
 }
 
