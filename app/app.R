@@ -23,6 +23,10 @@ ui <- pageWithSidebar(
                     c("Win by" = "win_by",
                       "Stoppage or decision" = "stoppage_decision")),
         
+        checkboxGroupInput("refnames", "Select Referees: ",
+                           unique(ufc_bind_top20$referee),
+        ),
+        
         # Input: Checkbox for whether outliers should be included ----
         checkboxInput("outliers", "Show outliers", TRUE)
         
@@ -33,8 +37,11 @@ ui <- pageWithSidebar(
         # Output: Formatted text for caption ----
         h3(textOutput("caption")),
         
-        # Output: Plot of the requested variable against mpg ----
-        plotOutput("barPlot")
+        # barplot for weightclass by win_by/stoppage_decision
+        plotOutput("barPlot"),
+        
+        # barplot for referee by last_round (3 selections)
+        plotOutput("refereePlot")
         
     )
 )
@@ -42,14 +49,6 @@ ui <- pageWithSidebar(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-    
-    formulaText <- reactive({
-        paste("Outcome ~", input$variable)
-    })
-    
-    output$caption <- renderText({
-        formulaText()
-    })
 
     output$barPlot <- renderPlot({
 
@@ -65,6 +64,21 @@ server <- function(input, output) {
         coord_flip() +
         theme_bw() +
         theme(legend.key=element_blank())
+   
+    # output$refereePlot <- renderPlot({
+    # 
+    #   p <- ggplot(
+    #       data=ufc_bind_top20)
+    # 
+    #   p + geom_bar(aes(x=ufc_bind_top20$last_round,fill=input$variable),alpha = 0.8,position='dodge') +
+    #       labs(title='Referees By last_round',
+    #         x='last_round',
+    #         y='count') +
+    #       scale_fill_brewer(palette='Set1') +
+    #       theme_bw() +
+    #       theme(legend.key=element_blank())
+    # 
+    #     })
     })
 }
 
