@@ -41,8 +41,9 @@ ui <- pageWithSidebar(
         # plotOutput("refereePlot")
         
         tabsetPanel(
-          tabPanel("Win Type", plotOutput("barPlot")),
-          tabPanel("Referee", plotOutput("refereePlot"))
+          tabPanel("Win Type", plotOutput("barPlot"), plotOutput("weightclasstotalPlot")),
+          tabPanel("Referee", plotOutput("refereePlot"), plotOutput("refereetotalPlot"), plotOutput("refereetotalSTACKPlot"))
+                   
         )
     )
 )
@@ -58,9 +59,9 @@ server <- function(input, output) {
         aes(x = weight_class))
       
       g + geom_bar(aes_string(fill = input$variable), position = 'fill') +
-        labs(title='Weight class by win-type 100% STACK',
+        labs(title='Normalized Interactive - Weight Class by Outcome',
              x='weight class',
-             y='distribution') +
+             y='') +
         scale_fill_brewer(palette='Set1') +
         coord_flip() +
         theme_bw() +
@@ -74,14 +75,58 @@ server <- function(input, output) {
       
       ggplot(data=y) +
         geom_bar(aes(x=y$last_round,fill=y$referee),alpha = 0.8,position='dodge') +
-        labs(title='Referees By last_round',
-             x='last_round',
-             y='count') +
+        labs(title='Interactive - Referees by Last Round',
+             x='Last Round',
+             y='Number of Matches') +
         scale_fill_brewer(palette='Set1') +
         theme_bw() +
         theme(legend.key=element_blank())
 
-        })
+      })
+    
+    output$weightclasstotalPlot <- renderPlot({
+      
+      ggplot(data=ufc_bind_top20) +
+        geom_bar(aes(x=ufc_bind_top20$weight_class,fill=ufc_bind_top20$win_by,position='fill')) +
+        labs(title='Weight Classes by Outcome',
+             x='Weight Class',
+             y='Number of Matches') +
+        scale_fill_brewer(palette='Set1') +
+        coord_flip() + 
+        theme_bw() +
+        theme(legend.key=element_blank())
+    
+      
+    })
+    
+    output$refereetotalPlot <- renderPlot({
+    
+      ggplot(data=ufc_bind_top20) +
+        geom_bar(aes(x=referee,fill=stoppage_decision,position="dodge2")) +
+        labs(title='Referee Experience by Outcome Type',
+             x='Referee',
+             y='Number of Matches') +
+        scale_fill_brewer(palette='Set1') +
+        coord_flip() + 
+        theme_bw() +
+        theme(legend.key=element_blank())
+      
+    })
+    
+    output$refereetotalSTACKPlot <- renderPlot({
+      
+      ggplot(data = ufc_bind_top20, aes(x = referee)) +
+        geom_bar(aes(fill = stoppage_decision), position = 'fill') +
+        labs(title='Normalized - Referee by Outcome Type',
+             x='Referee',
+             y='') +
+        scale_fill_brewer(palette='Set1') +
+        coord_flip() +
+        theme_bw() +
+        theme(legend.key=element_blank())
+      
+    })
+    
 }
 
 # Run the application 
