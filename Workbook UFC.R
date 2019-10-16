@@ -53,7 +53,7 @@ ufc_bind_top20 <- read.csv("ufc_bind_top20.csv")
 ##sort(table(ufc_data$referee),decreasing = TRUE))
 
 ##Bar plot of title bouts vs non title, referee
-ggplot(data=ufc_bind_top20) +
+ggplot(data=ufc_bind_top20,position) +
   geom_bar(aes(x=ufc_bind_top20$referee,fill=ufc_bind_top20$title_bout)) +
   labs(title='Referees By Experience',
        x='Referee',
@@ -85,15 +85,20 @@ ggplot(data=ufc_bind_top20) +
   theme_bw() +
   theme(legend.key=element_blank())
 
-##scatter plot win_by and years by count
-hist(ufc_bind_stoppage_top20$last_round,
-     main="Round Stoppage by Ref",
-     xlab="last_round",
-     xlim=c(1,5),
-     col="darkmagenta",
-     freq=FALSE
-)
+##Bar plot of referee by stoppage_decision 100% STACK
+ggplot(data = ufc_bind_top20, aes(x = referee)) +
+  geom_bar(aes(fill = stoppage_decision), position = 'fill') +
+  labs(title='Weight class by win 100% STACK',
+       x='weight class',
+       y='# of bouts') +
+  scale_fill_brewer(palette='Set1') +
+  coord_flip() +
+  theme_bw() +
+  theme(legend.key=element_blank())
 
+barplot(ufc_bind_top20$win_by, x = count() main = "blahblah")
+
+barplot()
 ##histogram of 
 ggplot(data = ufc_bind_top20, aes(ufc_bind_top20$last_round, position='dodge')) + 
   geom_histogram()
@@ -118,7 +123,7 @@ ggplot(data=ufc_bind_top20) +
   theme(legend.key=element_blank())
 ##barplot of weightclass by stoppage_decision
 ggplot(data=ufc_bind_top20) +
-  geom_bar(aes(x=ufc_bind_top20$weight_class,fill=ufc_bind_top20$stoppage_decision,position='fill')) +
+  geom_bar(aes(x=ufc_bind_top20$referees,fill=ufc_bind_top20$stoppage_decision,position='fill')) +
   labs(title='Referees By Experience',
        x='Weight Class',
        y='# of bouts') +
@@ -129,6 +134,17 @@ ggplot(data=ufc_bind_top20) +
 
 ##weight class by stoppage_decision STACKED
 ggplot(data = ufc_bind_top20, aes(x = weight_class)) +
+  geom_bar(aes(fill = stoppage_decision), position = 'fill') +
+  labs(title='Weight class by win 100% STACK',
+       x='weight class',
+       y='# of bouts') +
+  scale_fill_brewer(palette='Set1') +
+  coord_flip() +
+  theme_bw() +
+  theme(legend.key=element_blank())
+
+##referees
+ggplot(data = ufc_bind_top20, aes(x = referee)) +
   geom_bar(aes(fill = stoppage_decision), position = 'fill') +
   labs(title='Weight class by win 100% STACK',
        x='weight class',
@@ -159,6 +175,16 @@ ggplot(data=ufc_bind_top20) +
   theme_bw() +
   theme(legend.key=element_blank())
 ##
+ggplot(data=ufc_bind_top20) +
+  geom_bar(aes(x=ufc_bind_top20$last_round,fill=ufc_bind_top20$stoppage_decision),alpha = 0.8,position='dodge') +
+  labs(title='Referees By last_round',
+       x='last_round',
+       y='count') +
+  scale_fill_brewer(palette='Set1') +
+  theme_bw() +
+  theme(legend.key=element_blank())
+
+
 ggplot(ufc_bind_top20$r_fighter, aes(date, last_round_time)) +
   geom_point()
 
@@ -170,3 +196,4 @@ ggplot(dat,aes(x=xx)) +
   ata=subset(ufc_bind_top20,referee == 'John McCarthy'),fill = "red", alpha = 0.2) + 
   geom_bar(data=subset(ufc_bind_top20,referee == 'Herb Dean'),fill = "blue", alpha = 0.2) +
   geom_bar(data=subset(ufc_bind_top20,referee == 'Josh Rosenthal'),fill = "blue", alpha = 0.2)
+
