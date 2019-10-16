@@ -70,10 +70,10 @@ server <- function(input, output) {
     
     output$refereePlot <- renderPlot({
       
+      y <- ufc_bind_top20[which(ufc_bind_top20$referee %in% input$refnames),]
       
-      
-      ggplot(data=ufc_bind_top20) +
-        geom_bar(aes(x=ufc_bind_top20$last_round,fill=ufc_bind_top20$referee),alpha = 0.8,position='dodge') +
+      ggplot(data=y) +
+        geom_bar(aes(x=y$last_round,fill=y$referee),alpha = 0.8,position='dodge') +
         labs(title='Referees By last_round',
              x='last_round',
              y='count') +
